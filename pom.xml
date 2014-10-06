@@ -29,7 +29,7 @@
   <parent>
     <groupId>org.apache.httpcomponents</groupId>
     <artifactId>httpcomponents-client</artifactId>
-    <version>4.3.5</version>
+    <version>4.3.6-SNAPSHOT</version>
   </parent>
 
   <groupId>com.github.aucampia.apache-httpclient-osgi</groupId>
@@ -50,24 +50,20 @@
     <url>https://github.com/aucampia/apache-httpclient-osgi</url>
   </scm>
 
+  <distributionManagement>
+    <repository>
+      <id>bintray-aucampia-aucampia-apache-httpclient-osgi</id>
+      <name>aucampia-aucampia-apache-httpclient-osgi</name>
+      <url>https://api.bintray.com/maven/aucampia/aucampia/apache-httpclient-osgi</url>
+    </repository>
+  </distributionManagement>
+
   <properties>
     <httpcore.osgi.import.version>"[4.3.0, 4.4.0)"</httpcore.osgi.import.version>
     <commons-logging.osgi.import.version>"[1.1.0, 1.2.0)"</commons-logging.osgi.import.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient-osgi</artifactId>
-      <version>${project.version}</version>
-      <scope>compile</scope>
-      <exclusions>
-          <exclusion>
-              <groupId>*</groupId>
-              <artifactId>*</artifactId>
-          </exclusion>
-      </exclusions>
-    </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
@@ -78,13 +74,19 @@
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpcore</artifactId>
       <version>${httpcore.version}</version>
-      <scope>provided</scope>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore-nio</artifactId>
+      <version>${httpcore.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>${commons-codec.version}</version>
-      <scope>provided</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -134,7 +136,9 @@
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
+        <version>2.5.3</version>
         <extensions>true</extensions>
+        <inherited>false</inherited>
         <configuration>
           <instructions>
             <Bundle-Name>Apache ${project.name}</Bundle-Name>
@@ -152,7 +156,18 @@
             org.apache.http.impl.client.*;version=${project.version},
             org.apache.http.osgi.services.*;version=${project.version}
             </_exportcontents-->
-            <Embed-Dependency>*;scope=compile|runtime;inline=true</Embed-Dependency>
+            <_exportcontents>
+              !org.apache.commons.codec*,
+              org.apache.http.*;version=${project.version}
+            </_exportcontents>
+            <Embed-Dependency>
+              *;scope=compile|runtime;inline=true
+            </Embed-Dependency>
+            <Import-Package>
+              net.sf.ehcache.*;resolution:=optional,
+              net.spy.memcached.*;resolution:=optional,
+              *
+            </Import-Package>
             <!--Import-Package>
             javax.crypto,
             javax.crypto.spec,
@@ -180,7 +195,7 @@
             net.sf.ehcache.*;resolution:=optional,
             net.spy.memcached.*;resolution:=optional
             </Import-Package-->
-            <Bundle-Activator>org.apache.http.osgi.impl.HttpProxyConfigurationActivator</Bundle-Activator>
+            <!--Bundle-Activator>org.apache.http.osgi.impl.HttpProxyConfigurationActivator</Bundle-Activator-->
             <!-- Stop the JAVA_1_n_HOME variables from being treated as headers by Bnd -->
             <_removeheaders>JAVA_1_3_HOME,JAVA_1_4_HOME</_removeheaders>
           </instructions>

@@ -51,13 +51,13 @@
     <tag>HEAD</tag>
   </scm>
 
-  <!--distributionManagement>
+  <distributionManagement>
     <repository>
       <id>bintray-aucampia-aucampia-apache-httpclient-osgi</id>
       <name>aucampia-aucampia-apache-httpclient-osgi</name>
       <url>https://api.bintray.com/maven/aucampia/aucampia/apache-httpclient-osgi</url>
     </repository>
-  </distributionManagement-->
+  </distributionManagement>
 
   <properties>
     <httpcore.osgi.import.version>"[4.3.0, 4.4.0)"</httpcore.osgi.import.version>

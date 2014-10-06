@@ -50,13 +50,13 @@
     <url>https://github.com/aucampia/apache-httpclient-osgi</url>
   </scm>
 
-  <distributionManagement>
+  <!--distributionManagement>
     <repository>
       <id>bintray-aucampia-aucampia-apache-httpclient-osgi</id>
       <name>aucampia-aucampia-apache-httpclient-osgi</name>
       <url>https://api.bintray.com/maven/aucampia/aucampia/apache-httpclient-osgi</url>
     </repository>
-  </distributionManagement>
+  </distributionManagement-->
 
   <properties>
     <httpcore.osgi.import.version>"[4.3.0, 4.4.0)"</httpcore.osgi.import.version>
@@ -133,6 +133,15 @@
       </resource>
     </resources>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.4</version>
+        <inherited>false</inherited>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
